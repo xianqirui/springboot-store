@@ -24,7 +24,7 @@ public class UserServiceTest {
     public void reg() {
         try {
             User user = new User();
-            user.setUsername("tom");
+            user.setUsername("xianqirui");
             user.setPassword("123");
             userService.reg(user);
             System.out.println("OK");

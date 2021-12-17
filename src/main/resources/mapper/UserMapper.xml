@@ -28,7 +28,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="uid">
         INSERT INTO t_user(username, password, salt, phone, email, gender, avatar,
                            is_delete, created_user, created_time, modified_user, modified_time)
-        VALUES (#{username}, #{password}, #{salt}, #{salt}, #{email}, #{gender}, #{avatar},
+        VALUES (#{username}, #{password}, #{salt}, #{phone}, #{email}, #{gender}, #{avatar},
                 #{isDelete}, #{createdUser}, #{createdTime}, #{modifiedUser}, #{modifiedTime}
                 )
     </insert>
