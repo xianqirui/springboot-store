@@ -1,5 +1,6 @@
 package com.xqr.stroe.mapper;
 
+import com.xqr.stroe.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,6 +18,15 @@ public class UserMapperTest {
     * */
     @Test
     public void insert() {
-
+        User user = new User();
+        user.setUsername("tim");
+        user.setPassword("123");
+        Integer insert = userMapper.insert(user);
+        System.out.println(insert);
+    }
+    @Test
+    public void find(){
+        User tim = userMapper.findByUsername("tim");
+        System.out.println(tim);
     }
 }
