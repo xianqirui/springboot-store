@@ -3,10 +3,7 @@ package com.xqr.stroe.service.impl;
 import com.xqr.stroe.entity.User;
 import com.xqr.stroe.mapper.UserMapper;
 import com.xqr.stroe.service.IUserService;
-import com.xqr.stroe.service.exception.InsertException;
-import com.xqr.stroe.service.exception.PasswordNotMatchException;
-import com.xqr.stroe.service.exception.UserNameException;
-import com.xqr.stroe.service.exception.UserNotFoundException;
+import com.xqr.stroe.service.exception.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -84,6 +81,26 @@ public class UserServiceImpl implements IUserService {
         user.setAvatar(result.getAvatar());
         //返回的user对象，是为了辅助其他页面展示用的
         return user;
+    }
+
+    @Override
+    public void changePasswword(Integer uid, String username, String oldPassword, String newPassword) {
+        User result = userMapper.findByUid(uid);
+        if (result==null||result.getIsDelete()==1){
+            throw new UserNotFoundException("用户数据未找到");
+        }
+        //原始密码和数据库密码比较
+        String oldMd5password = getMDPassword(oldPassword, result.getSalt());
+        if (!result.getPassword().equals(oldMd5password)){
+            throw new PasswordNotMatchException("密码错误");
+        }
+        //将新的密码设置到数据库中,将新的密码进行加密再去更新
+        String newmd5Password = getMDPassword(newPassword, result.getSalt());
+        //更新
+        Integer rows = userMapper.updatePasswordByUid(uid, newmd5Password, username, new Date());
+        if (rows!=1){
+            throw new UpdateException("更新数据产生未知异常");
+        }
     }
 
     //md5算法加密

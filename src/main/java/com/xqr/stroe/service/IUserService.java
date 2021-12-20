@@ -10,4 +10,6 @@ public interface IUserService {
     * 用户登录功能，返回用户数据
     * */
     User login(String username,String password);
+    void changePasswword(Integer uid,String username,
+                         String oldPassword,String newPassword);
 }

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Date;
+
 @SpringBootTest
 public class UserMapperTest {
     //idea有检测功能,接口实不能直接创建Bean(底层对应动态代理)
@@ -18,6 +20,7 @@ public class UserMapperTest {
     * */
     @Test
     public void insert() {
+
         User user = new User();
         user.setUsername("tim");
         user.setPassword("123");
@@ -28,5 +31,14 @@ public class UserMapperTest {
     public void find(){
         User tim = userMapper.findByUsername("tim");
         System.out.println(tim);
+    }
+
+    @Test
+    public void update(){
+        userMapper.updatePasswordByUid(6,"456","管理员",new Date());
+    }
+    @Test
+    public void findbyuid(){
+        System.out.println(userMapper.findByUid(6));
     }
 }
