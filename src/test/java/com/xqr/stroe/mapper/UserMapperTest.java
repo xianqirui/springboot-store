@@ -41,4 +41,13 @@ public class UserMapperTest {
     public void findbyuid(){
         System.out.println(userMapper.findByUid(6));
     }
+    @Test
+    public void updateInfoUid(){
+        User user = new User();
+        user.setUid(9);
+        user.setPhone("15282097256");
+        user.setEmail("sqwas@qq.com");
+        user.setGender(1);
+        userMapper.updateInfoByUid(user);
+    }
 }

@@ -18,4 +18,6 @@ public interface UserMapper{
     Integer updatePasswordByUid(Integer uid, String password, String modifiedUser, Date modifiedTime);
     //根据用户的id查询用户的数据，如果找到返回对象
     User findByUid(Integer uid);
+    /*更新用户数据*/
+    Integer updateInfoByUid(User user);
 }

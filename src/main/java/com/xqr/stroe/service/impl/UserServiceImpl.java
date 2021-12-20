@@ -102,6 +102,36 @@ public class UserServiceImpl implements IUserService {
             throw new UpdateException("更新数据产生未知异常");
         }
     }
+    //查询数据
+    @Override
+    public User getByUid(Integer uid) {
+        User byUid = userMapper.findByUid(uid);
+        if(byUid==null||byUid.getIsDelete()==1){
+            throw new UserNotFoundException("用户数据未找到");
+        }
+        User user = new User();
+        user.setUsername(byUid.getUsername());
+        user.setPhone(byUid.getPhone());
+        user.setEmail(byUid.getEmail());
+        user.setGender(byUid.getGender());
+        return user;
+    }
+    //更新数据
+    @Override
+    public void changeInfo(Integer uid, String username, User user) {
+        User byUid = userMapper.findByUid(uid);
+        if(byUid==null||byUid.getIsDelete()==1){
+            throw new UserNotFoundException("用户数据未找到");
+        }
+        user.setUid(uid);
+        //user.setUsername(username);
+        user.setModifiedUser(username);
+        user.setModifiedTime(new Date());
+        Integer rows = userMapper.updateInfoByUid(user);
+        if (rows!=1){
+            throw new UpdateException("更新数据产生未知异常");
+        }
+    }
 
     //md5算法加密
     private String getMDPassword(String password,String salt){

@@ -12,4 +12,8 @@ public interface IUserService {
     User login(String username,String password);
     void changePasswword(Integer uid,String username,
                          String oldPassword,String newPassword);
+    /*查询用户对象*/
+   User getByUid(Integer uid);
+   /*更新用户数据*/
+   void changeInfo(Integer uid,String username,User user);
 }
