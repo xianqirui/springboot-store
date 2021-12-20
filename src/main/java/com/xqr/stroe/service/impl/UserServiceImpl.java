@@ -4,7 +4,9 @@ import com.xqr.stroe.entity.User;
 import com.xqr.stroe.mapper.UserMapper;
 import com.xqr.stroe.service.IUserService;
 import com.xqr.stroe.service.exception.InsertException;
+import com.xqr.stroe.service.exception.PasswordNotMatchException;
 import com.xqr.stroe.service.exception.UserNameException;
+import com.xqr.stroe.service.exception.UserNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -51,6 +53,39 @@ public class UserServiceImpl implements IUserService {
             throw new InsertException("在用户注册过程中产生了未知错误");
         }
     }
+    /*用户登录*/
+    @Override
+    public User login(String username, String password) {
+        //依据用户名查询用户是否存在
+        User result = userMapper.findByUsername(username);
+        if(result==null){
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        //检测用户密码是否匹配
+        //1.先获取数据库中加密后的密码
+        String oldPassword = result.getPassword();
+        //2和用户传递过来的密码进行比较
+        //2.1先获取盐值
+        String salt = result.getSalt();
+        //2.2将用户密码按照相同MD5算法加密
+        String newMd5password=getMDPassword(password,salt);
+        //3.将密码进行比较
+        if (!newMd5password.equals(oldPassword)) {
+            throw new PasswordNotMatchException("用户密码错误");
+        }
+        //判断is_delete是否为1表示被标记删除
+        if(result.getIsDelete()==1){
+            throw new UserNotFoundException("用户数据不存在");
+        }
+        //调用mapper层方法查询用户数据，（减少数据传输）提升了系统性能。
+        User user =new User();
+        user.setUid(result.getUid());
+        user.setUsername(result.getUsername());
+        user.setAvatar(result.getAvatar());
+        //返回的user对象，是为了辅助其他页面展示用的
+        return user;
+    }
+
     //md5算法加密
     private String getMDPassword(String password,String salt){
         //md5加密算法调用(进行三次加密)

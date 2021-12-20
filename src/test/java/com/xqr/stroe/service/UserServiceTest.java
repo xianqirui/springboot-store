@@ -35,4 +35,10 @@ public class UserServiceTest {
             System.out.println(e.getMessage());
         }
     }
+    /*测试登录*/
+    @Test
+    public void login(){
+        User user = userService.login("tom01", "123");
+        System.out.println(user);
+    }
 }

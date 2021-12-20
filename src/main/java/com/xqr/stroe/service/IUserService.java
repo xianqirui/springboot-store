@@ -6,4 +6,8 @@ import com.xqr.stroe.entity.User;
 public interface IUserService {
     //注册方法
     void reg(User user);
+    /*
+    * 用户登录功能，返回用户数据
+    * */
+    User login(String username,String password);
 }
