@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpSession;
+
 //@Controller
 @RestController
 @RequestMapping("/users")
@@ -44,4 +46,20 @@ public class UserController extends BaseController{
         }
         return result;
     }*/
+    /*约定大于配置：省略大量的配置注解的编写
+    * 2。接收数据方式：请求处理方法的参数列表设置为非pojo类型，
+    * soringboot直接将参数名和方法的参数名进行比较
+    * 相同则自动注入
+    * */
+    /*用户登录*/
+    @RequestMapping("/login")
+    public JsonResult<User> login(String username, String password, HttpSession session){
+        User data = userService.login(username, password);
+        //向session对象中绑定数据
+        session.setAttribute("uid",data.getUid());
+        session.setAttribute("username",data.getUsername());
+        //获取session中绑定的数据
+        System.out.println(getUsernameFromSession(session));
+        return new JsonResult<User>(OK,data);
+    }
 }
