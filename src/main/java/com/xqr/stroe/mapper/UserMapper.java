@@ -1,6 +1,7 @@
 package com.xqr.stroe.mapper;
 
 import com.xqr.stroe.entity.User;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Date;
 
@@ -20,4 +21,8 @@ public interface UserMapper{
     User findByUid(Integer uid);
     /*更新用户数据*/
     Integer updateInfoByUid(User user);
+    //修改用户头像，根据用户uid
+    Integer updateAvatarByUid(@Param("uid") Integer uid, String avatar,
+                              String modifiedUser, Date modifiedTime);
+
 }
