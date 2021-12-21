@@ -1,5 +1,6 @@
 package com.xqr.stroe.controller;
 
+import com.xqr.stroe.controller.exception.*;
 import com.xqr.stroe.service.exception.*;
 import com.xqr.stroe.util.JsonResult;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,7 +15,7 @@ public class BaseController {
     //请求处理方法，这个方法的返回值是需要返回给前端的
     //自动将异常对象窗体给该方法的参数列表
     //项目中产生的异常会被拦截到此方法
-    @ExceptionHandler(ServiceException.class) //用于统一处理抛出的异常
+    @ExceptionHandler({ServiceException.class,FileUploadException.class}) //用于统一处理抛出的异常
     public JsonResult<Void> handlerException(Throwable e){
         JsonResult<Void> result = new JsonResult<>();
         if(e instanceof UserNameException){
@@ -32,6 +33,16 @@ public class BaseController {
         }else if (e instanceof UpdateException){
             result.setState(5002);
             result.setMessage("更新数据时产生未知异常");
+        } else if (e instanceof FileEmptyException) {
+            result.setState(6000);
+        } else if (e instanceof FileSizeException) {
+            result.setState(6001);
+        } else if (e instanceof FileTypeException) {
+            result.setState(6002);
+        } else if (e instanceof FileStateException) {
+            result.setState(6003);
+        } else if (e instanceof FileUploadIOException) {
+            result.setState(6004);
         }
         return  result;
     }

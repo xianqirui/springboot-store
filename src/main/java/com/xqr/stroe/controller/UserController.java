@@ -1,5 +1,6 @@
 package com.xqr.stroe.controller;
 
+import com.xqr.stroe.controller.exception.*;
 import com.xqr.stroe.entity.User;
 import com.xqr.stroe.service.IUserService;
 import com.xqr.stroe.service.exception.InsertException;
@@ -7,9 +8,16 @@ import com.xqr.stroe.service.exception.UserNameException;
 import com.xqr.stroe.util.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 //@Controller
 @RestController
@@ -89,5 +97,75 @@ public class UserController extends BaseController{
         String username = getUsernameFromSession(session);
         userService.changeInfo(uid,username,user);
         return new JsonResult<>(OK);
+    }
+    //接受用户头像
+
+    /**
+     * MultipartFile接口时SpringMvc提供的接口
+     * 可以获取任何类型的文件
+     * @param session
+     * @param file
+     * @return
+     */
+    //设置上传文件最大值
+    public static final int AVATAR_MAX_SIZE=10*1024*1024;
+    //限制文件类型
+    public static final List<String> AVATAR_TYPE=new ArrayList<>();
+    static {
+        AVATAR_TYPE.add("image/jpeg");
+        AVATAR_TYPE.add("image/png");
+        AVATAR_TYPE.add("image/bmp");
+        AVATAR_TYPE.add("image/gif");
+    }
+    @RequestMapping("/change_avatar")
+    public JsonResult<String> changeAvatar(HttpSession session,
+                                           @RequestParam("file") MultipartFile file){
+            //判断文件是否为空
+        if (file.isEmpty()){
+            throw new FileEmptyException("文件为空");
+        }
+        if (file.getSize()>AVATAR_MAX_SIZE){
+            throw new FileSizeException("文件超出限制");
+        }
+        //判断文件类型
+        String contentyep=file.getContentType();
+        System.out.println(contentyep);
+        //如果集合包含某个元素返回true
+        if(!AVATAR_TYPE.contains(contentyep)){
+            throw new FileTypeException("文件类型不支持");
+        }
+        //上传的文件... /upload/文件.png
+        String path = session.getServletContext().getRealPath("upload");
+        //File对象执行这个路径，File是否存在
+        File dir=new File(path);
+        if (!dir.exists()){//检测目录是否存在
+            dir.mkdirs();//创建目录
+        }
+        //获取文件名称，
+        String filename = file.getOriginalFilename();
+        System.out.println("filename"+filename);
+        int index = filename.lastIndexOf(".");
+        //文件后缀
+        String suffix=filename.substring(index);
+        //UUID生成新的字符串作为文件名
+        filename = UUID.randomUUID().toString().toUpperCase()+suffix;
+        //空文件
+        File dest=new File(dir,filename);
+        //将参数中的文件数据写入空文件中
+        try {
+            file.transferTo(dest);//将file文件中的数据写入到dest文件中
+        } catch (IOException e) {
+            throw new FileUploadIOException("文件读写异常");
+        }catch (FileStateException e) {
+            throw new FileStateException("文件状态异常");
+        }
+        //
+        Integer uid=getuidFromSession(session);
+        String username=getUsernameFromSession(session);
+        //返回头像路径/upload/test.png
+        String avatar="/upload/"+filename;
+        userService.updateAvatarByUid(uid,avatar,username);
+        //返回路径给前端，将来用来展示头像
+        return new JsonResult<String>(OK,avatar);
     }
 }
