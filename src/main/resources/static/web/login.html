@@ -157,6 +157,8 @@
 							//跳转系统主页
 							//相对路径来确定跳转页面
 							location.href="index.html";
+							//将服务器端返回的头像设置到cookie中
+							$.cookie("avatar",json.data.avatar,{expires: 7});
 						}else {
 							alert("登陆失败");
 						}

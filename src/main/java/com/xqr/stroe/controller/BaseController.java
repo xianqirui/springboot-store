@@ -22,11 +22,14 @@ public class BaseController {
             result.setState(4000);
             result.setMessage("用户名已被占用");
         }else if (e instanceof UserNotFoundException){
-            result.setState(5001);
+            result.setState(4001);
             result.setMessage("用户数据没找到");
         }else if (e instanceof PasswordNotMatchException){
-            result.setState(5002);
+            result.setState(4002);
             result.setMessage("用户密码错误的异常");
+        }else if (e instanceof AdressCountLimtException){
+            result.setState(4003);
+            result.setMessage("用户收货地址已经达到上线");
         }else if (e instanceof InsertException){
             result.setState(5000);
             result.setMessage("注册时产生未知异常");

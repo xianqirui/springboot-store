@@ -62,6 +62,9 @@ public class UserController extends BaseController{
     /*用户登录*/
     @RequestMapping("/login")
     public JsonResult<User> login(String username, String password, HttpSession session){
+        //登陆前清除session
+        session.removeAttribute("uid");
+        session.removeAttribute("username");
         User data = userService.login(username, password);
         //向session对象中绑定数据
         session.setAttribute("uid",data.getUid());
@@ -120,6 +123,7 @@ public class UserController extends BaseController{
     @RequestMapping("/change_avatar")
     public JsonResult<String> changeAvatar(HttpSession session,
                                            @RequestParam("file") MultipartFile file){
+        System.out.println("上传头像开始");
             //判断文件是否为空
         if (file.isEmpty()){
             throw new FileEmptyException("文件为空");
@@ -135,12 +139,14 @@ public class UserController extends BaseController{
             throw new FileTypeException("文件类型不支持");
         }
         //上传的文件... /upload/文件.png
-        String path = session.getServletContext().getRealPath("upload");
+        //String path = session.getServletContext().getRealPath("/upload");
+        //因为每次运行项目都会生成一个tomcat文件，所以我直接把存储路径定死
         //File对象执行这个路径，File是否存在
-        File dir=new File(path);
+        File dir=new File("E:\\IDEwork\\SpringBoot实战\\stroe\\src\\main\\resources\\static\\upload\\");
         if (!dir.exists()){//检测目录是否存在
             dir.mkdirs();//创建目录
         }
+        System.out.println(dir);
         //获取文件名称，
         String filename = file.getOriginalFilename();
         System.out.println("filename"+filename);
