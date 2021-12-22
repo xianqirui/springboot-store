@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 /*实现类*/
 @Service
-public class IDistrictServiceImpl implements IDistrictService {
+public class DistrictServiceImpl implements IDistrictService {
 
     @Autowired
     private DistrictMapper districtMapper;
@@ -26,5 +26,10 @@ public class IDistrictServiceImpl implements IDistrictService {
             d.setParent(null);
         }
         return list;
+    }
+
+    @Override
+    public String getNameByCode(String code) {
+        return districtMapper.findNameByCode(code);
     }
 }

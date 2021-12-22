@@ -4,7 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--namespace：用于指定当前文件与哪个接口进行映射-->
 <mapper namespace="com.xqr.stroe.mapper.DistrictMapper">
-<select id="findByParent" resultType="com.xqr.stroe.entity.District">
-        select * from t_dict_district where parent=#{parent} order by code ASC
-</select>
+        <select id="findByParent" resultType="com.xqr.stroe.entity.District">
+                select *
+                from t_dict_district
+                where parent = #{parent}
+                order by code ASC
+        </select>
+
+        <select id="findNameByCode" resultType="string">
+                select name
+                from t_dict_district
+                where code = #{code}
+        </select>
 </mapper>

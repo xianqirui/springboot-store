@@ -19,5 +19,10 @@ public class DistrictMapperTest {
         System.out.println(parent);
 
     }
+    @Test
+    public void findByCode(){
+        String name = districtMapper.findNameByCode("610000");
+        System.out.println(name);
+    }
 
 }
