@@ -28,6 +28,7 @@ public class AddressController extends BaseController{
     }
     @RequestMapping({"/",""})
     public JsonResult<List<Address>> getByUid(HttpSession session){
+        System.out.println("刷新成功");
         Integer uid = getuidFromSession(session);
         List<Address> data = addressService.getByuid(uid);
         return new JsonResult<List<Address>>(OK,data);
@@ -36,9 +37,21 @@ public class AddressController extends BaseController{
     /*设置默认值*/
     @RequestMapping("/set_default/{aid}")
     public JsonResult<Void> setDefault(@PathVariable("aid") Integer aid, HttpSession session){
+        System.out.println("你好");
         Integer uid = getuidFromSession(session);
         String username = getUsernameFromSession(session);
         addressService.setDefault(aid,uid,username);
+        return new JsonResult<>(OK);
+    }
+
+    /*删除操作*/
+    @RequestMapping("/delete/{aid}")
+    public JsonResult<Void> delete(@PathVariable("aid") Integer aid,HttpSession session){
+
+        addressService.delete(
+                aid,
+                getuidFromSession(session),
+                getUsernameFromSession(session));
         return new JsonResult<>(OK);
     }
 }

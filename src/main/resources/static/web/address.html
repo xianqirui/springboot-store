@@ -255,6 +255,7 @@
 					dataType:"json",
 					success:function (json) {
 						if (json.state==200){
+							$("#address-list").empty();
 							let list=json.data;
 							for (let i = 0; i < list.length; i++) {
 								//TODO
@@ -264,14 +265,15 @@
 									'<td>#{address}</td>\n' +
 									'<td>#{phone}</td>\n' +
 									'<td><a class="btn btn-xs btn-info"><span class="fa fa-edit"></span> 修改</a></td>\n' +
-									'<td><a class="btn btn-xs add-del btn-info"><span class="fa fa-trash-o"></span> 删除</a></td>\n' +
-									'<td><a onclick="setDefault(#{aid})" class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
+									'<td><a onclick="deletebyAid(#{aid1})" class="btn btn-xs add-del btn-info"><span  class="fa fa-trash-o"></span> 删除</a></td>\n' +
+									'<td><a onclick="setDefault(#{aid2})" class="btn btn-xs add-def btn-default">设为默认</a></td>\n' +
 									'</tr>';
 							tr=tr.replace(/#{tag}/g,list[i].tag);
 							tr=tr.replace(/#{name}/g,list[i].name);
 							tr=tr.replace("#{address}",list[i].address);
 							tr=tr.replace("#{phone}",list[i].phone);
-							tr=tr.replace("#{aid}",list[i].aid)
+							tr=tr.replace("#{aid1}",list[i].aid)
+							tr=tr.replace("#{aid2}",list[i].aid)
 							$("#address-list").append(tr);
 							}
 							//将某个元素隐藏使用hide()方法
@@ -282,20 +284,36 @@
 					}
 				});
 			}
+			//删除方法
+			function deletebyAid(aid){
+				$.ajax({
+					url:"/addresses/delete/"+aid,
+					type:"POST",
+					dataType:"JSON",
+					success:function (json) {
+						if(json.state==200){
+							//刷新列表
+							showAddressList();
+						}else {
+							alert("删除失败");
+						}
+					},
+					error:function (xhr) {
+						alert("删除收货地址时产生未知异常"+xhr.message);
+					}
+				})
+			}
 			//修改默认收货地址
 			function setDefault(aid){
 				$.ajax({
 					url:"/addresses/set_default/"+aid,
-					type:"GET",
+					type:"POST",
 					dataType:"JSON",
 					success:function (json) {
 						if(json.state==200){
 							//刷新列表
 							showAddressList();
 							alert("设置成功");
-							//跳转系统主页
-							//相对路径来确定跳转页面
-							location.href="address.html";
 						}else {
 							alert("设置失败");
 						}
