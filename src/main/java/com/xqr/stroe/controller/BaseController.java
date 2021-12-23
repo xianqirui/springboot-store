@@ -30,6 +30,12 @@ public class BaseController {
         }else if (e instanceof AdressCountLimtException){
             result.setState(4003);
             result.setMessage("用户收货地址已经达到上线");
+        }else if (e instanceof AddressNotFoundException){
+            result.setState(4004);
+            result.setMessage("用户收货地址数据不存在");
+        }else if (e instanceof AccessDeniedException){
+            result.setState(4005);
+            result.setMessage("用户收货地址数据非法访问");
         }else if (e instanceof InsertException){
             result.setState(5000);
             result.setMessage("注册时产生未知异常");
