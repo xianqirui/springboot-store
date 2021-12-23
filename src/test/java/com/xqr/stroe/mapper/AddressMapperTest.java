@@ -54,4 +54,13 @@ public class AddressMapperTest {
     public void findbyaid(){
         System.out.println(addressMapper.findByAid(5));
     }
+    @Test
+    public void findLast(){
+        System.out.println(addressMapper.findLastModified(9));
+    }
+    @Test
+    public void delete(){
+        addressMapper.deleteByAid(7);
+    }
 }
+

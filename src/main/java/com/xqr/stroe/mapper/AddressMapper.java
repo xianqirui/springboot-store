@@ -30,5 +30,8 @@ public interface AddressMapper {
     Integer updateNonDefault(Integer uid);
     Integer updateDefault(Integer aid, String modifiedUser, Date modifiedTime);
 
+    /*删除操作*/
+    Integer deleteByAid(Integer aid);
+    Address findLastModified(Integer uid);
 
 }

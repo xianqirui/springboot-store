@@ -17,4 +17,7 @@ public interface IAddressService {
      * @param username
      */
     void setDefault(Integer aid,Integer uid,String username);
+
+    //删除操作
+    void delete(Integer aid,Integer uid,String username);
 }
