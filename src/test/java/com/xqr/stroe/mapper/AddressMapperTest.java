@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class AddressMapperTest {
@@ -33,5 +34,24 @@ public class AddressMapperTest {
     public void countByUid(){
         Integer integer = addressMapper.countByUid(9);
         System.out.println(integer);
+    }
+    @Test
+    public void findByUid(){
+        List<Address> addresses = addressMapper.findByUid(9);
+        for (Address address : addresses) {
+            System.out.println(address);
+        }
+    }
+    @Test
+    public void updataNOdef(){
+        addressMapper.updateNonDefault(9);
+    }
+    @Test
+    public void ipdatedef(){
+        addressMapper.updateDefault(5,"管理员",new Date());
+    }
+    @Test
+    public void findbyaid(){
+        System.out.println(addressMapper.findByAid(5));
     }
 }

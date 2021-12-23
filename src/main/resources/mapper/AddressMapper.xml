@@ -37,4 +37,19 @@
     <select id="countByUid" resultType="integer">
         select count(*) from t_address where uid=#{uid}
     </select>
+    <!--根据用户id查询用户收货地址数据-->
+    <select id="findByUid" resultType="com.xqr.stroe.entity.Address">
+        select * from t_address where uid=#{uid}
+        order by is_default DESC,created_time DESC
+    </select>
+
+    <update id="updateNonDefault">
+        update t_address set is_default=0 where uid=#{uid}
+    </update>
+    <update id="updateDefault">
+        update t_address set is_default=1,modified_user=#{modifiedUser}, modified_time=#{modifiedTime} where aid=#{aid}
+    </update>
+    <select id="findByAid" resultType="com.xqr.stroe.entity.Address">
+        select * from t_address where aid=#{aid}
+    </select>
 </mapper>
