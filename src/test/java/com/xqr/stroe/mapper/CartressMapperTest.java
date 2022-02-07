@@ -47,5 +47,11 @@ public class CartressMapperTest {
         System.out.println(cartMapper.findByCid(1));
     }
 
+    @Test
+    public void findBYOVcid(){
+        Integer [] cids={1,2,3};
+        System.out.println(cartMapper.findBYVOcid(cids));
+    }
+
 }
 

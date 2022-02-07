@@ -43,4 +43,10 @@ public class CartController extends BaseController{
         return new JsonResult<>(OK,data);
     }
 
+    @RequestMapping("list")
+    public JsonResult<List<CartVO>> getVOByCdi(Integer[] cids,HttpSession session){
+        List<CartVO> data=cartService.getBYVOcid(cids,getuidFromSession(session));
+        return new JsonResult<>(OK,data);
+    }
+
 }
