@@ -2,12 +2,15 @@ package com.xqr.stroe.mapper;
 
 import com.xqr.stroe.entity.Address;
 import com.xqr.stroe.entity.Cart;
+import com.xqr.stroe.vo.CartVO;
 import lombok.Data;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.SQLOutput;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 public class CartressMapperTest {
@@ -33,6 +36,16 @@ public class CartressMapperTest {
         System.out.println(cartMapper.findCartNum(9,10000005));
     }
 
+    @Test
+    public void findBYVO(){
+        List<CartVO> list=cartMapper.findBYUid(9);
+        System.out.println(list.size());
+    }
+
+    @Test
+    public void findBYcid(){
+        System.out.println(cartMapper.findByCid(1));
+    }
 
 }
 

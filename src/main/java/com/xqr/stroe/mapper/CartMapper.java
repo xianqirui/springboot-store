@@ -1,9 +1,11 @@
 package com.xqr.stroe.mapper;
 
 import com.xqr.stroe.entity.Cart;
+import com.xqr.stroe.vo.CartVO;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 public interface CartMapper {
     /**
@@ -31,4 +33,9 @@ public interface CartMapper {
      * @return
      */
     Cart findCartNum(Integer uid,Integer pid);
+
+    List<CartVO>findBYUid(Integer uid);
+
+    Cart findByCid(Integer cid);
+
 }
