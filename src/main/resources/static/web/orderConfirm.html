@@ -328,6 +328,28 @@
 				});
 			}
 
+			//支付点击事件
+			$("#btn-create-order").click(function () {
+				let aid= $("#address-list").val();
+				let cids= location.search.substr(1);
+				$.ajax({
+					url: "/orders/create",
+					type: "GET",
+					data: "aid="+aid+"&"+cids,
+					dataType: "JSON",
+					success: function(json) {
+						if (json.state==200){
+							location.href="payment.html";
+							alert("订单创建成功")
+						}
+					},
+					error:function (xhr){
+						alert("订单数据加载异常，"+xhr.status);
+					}
+				});
+			})
+
+
 
 		</script>
 	</body>
