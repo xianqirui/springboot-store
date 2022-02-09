@@ -20,4 +20,6 @@ public interface IAddressService {
 
     //删除操作
     void delete(Integer aid,Integer uid,String username);
+
+    Address getByAid(Integer aid,Integer uid);
 }
